@@ -1,0 +1,225 @@
+/* =========================================
+   CUSTOM FONT SETUP
+   ========================================= */
+/* Loading the custom Libre Caslon Condensed font from local files */
+@font-face {
+    font-family: 'Libre Caslon Condensed';
+    /* Make sure you download the font and place it in a 'fonts' folder */
+    src: url('assets/fonts/LibreCaslonCondensed-Regular.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* =========================================
+   RESET & GLOBAL STYLES
+   ========================================= */
+/* This removes default browser margins so our design looks consistent everywhere */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #283618; /* Dark olive green */
+    color: #EFD0CA;            /* Cream/beige */
+    font-family: 'Fira Code', monospace; /* Base font for regular text */
+    line-height: 1.6;          /* Gives text some breathing room */
+    padding: 40px 20px;        /* Space around the edges of the screen */
+}
+
+/* =========================================
+   LAYOUT
+   ========================================= */
+.container {
+    max-width: 800px; /* Prevents the site from stretching too wide on big screens */
+    margin: 0 auto;   /* Centers the container horizontally */
+}
+
+/* =========================================
+   HEADER STYLES
+   ========================================= */
+.site-header {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.main-title {
+    font-family: 'Libre Caslon Condensed', serif; /* Using our new custom font */
+    font-size: 4rem;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+
+.social-links {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.social-links a {
+    color: #EFD0CA;
+    text-decoration: underline;
+    transition: opacity 0.2s; /* Smooth fade effect when hovering */
+}
+
+.social-links a:hover {
+    opacity: 0.7; /* Makes links slightly transparent on hover */
+}
+
+.quote {
+    font-style: italic;
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+/* The horizontal line under the header 
+.section-divider {
+    border: none;
+    border-top: 1px solid #EFD0CA;
+    margin: 30px 0;
+    opacity: 0.5;
+}
+*/
+.section-divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #EFD0CA, transparent);
+    margin: 30px 0;
+}
+
+/* =========================================
+   MAIN CONTENT STYLES
+   ========================================= */
+.content-section {
+    margin-bottom: 50px; /* Space between sections */
+}
+
+.section-heading {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed rgba(239, 208, 202, 0.3);
+    padding-bottom: 5px;
+}
+
+.summary-text {
+    font-size: 1rem;
+    text-align: justify;
+}
+
+/* =========================================
+   TIMELINE (EXPERIENCE) STYLES
+   ========================================= */
+#timeline-container {
+    position: relative;
+    padding-left: 25px;
+    border-left: 2px solid #EFD0CA; /* The vertical line of the timeline */
+    margin-left: 10px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 35px;
+}
+
+/* The dot on the timeline */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -34px; /* Positions the dot right over the vertical line */
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%; /* Makes the box a circle */
+    background-color: #283618;
+    border: 2px solid #EFD0CA;
+}
+
+.timeline-date {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: bold;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.timeline-role {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 2px 0 5px 0;
+}
+
+/* =========================================
+   PROJECTS STYLES
+   ========================================= */
+.project-item {
+    display: flex; /* Aligns logo and text side-by-side */
+    gap: 20px;     /* Space between logo and text */
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.project-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: cover; /* Ensures images don't stretch weirdly */
+    border: 1px solid #EFD0CA;
+    border-radius: 4px;
+    background-color: rgba(239, 208, 202, 0.1); /* Fallback color if image fails */
+}
+
+.project-details h3 {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+.project-details p {
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+}
+
+.project-link {
+    color: #EFD0CA;
+    font-size: 0.85rem;
+    text-decoration: underline;
+}
+
+/* =========================================
+   FOOTER STYLES
+   ========================================= */
+.site-footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(239, 208, 202, 0.2);
+    font-family: 'Urbanist', sans-serif;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+/* These rules only apply when the screen is 600px wide or smaller (like phones) */
+@media (max-width: 600px) {
+    body {
+        padding: 20px 15px; /* Less padding on small screens */
+    }
+
+    .main-title { 
+        font-size: 3rem; /* Smaller main heading */
+    }
+
+    .project-item { 
+        flex-direction: column; /* Stack logo on top of text on phones */
+        gap: 10px; 
+    }
+
+    .project-logo { 
+        width: 50px; 
+        height: 50px; 
+    }
+}
