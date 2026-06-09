@@ -58,8 +58,8 @@ body {
 }
 
 .social-links a {
-    color: #EFD0CA;
-    text-decoration: underline;
+    color: #DDA15E;
+    text-decoration: none;
     transition: opacity 0.2s; /* Smooth fade effect when hovering */
 }
 
