@@ -4,7 +4,6 @@
 /* Loading the custom Libre Caslon Condensed font from local files */
 @font-face {
     font-family: 'Libre Caslon Condensed';
-    /* Make sure you download the font and place it in a 'fonts' folder */
     src: url('assets/fonts/LibreCaslonCondensed-Regular.ttf') format('truetype'); 
     font-weight: normal;
     font-style: normal;
