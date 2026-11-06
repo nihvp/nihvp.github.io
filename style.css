@@ -9,6 +9,16 @@
     font-style: normal;
 }
 
+/* Tiny font used by the handshake board: every character is a 0.5em x 1em cell,
+   and the block characters ▀ ▄ █ fill its top half, bottom half or all of it.
+   That turns each character into two square pixels. */
+@font-face {
+    font-family: 'Pixel Blocks';
+    src: url('assets/fonts/pixel-blocks.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* =========================================
    RESET & GLOBAL STYLES
    ========================================= */
@@ -66,10 +76,140 @@ body {
     opacity: 0.7; /* Makes links slightly transparent on hover */
 }
 
-.quote {
-    font-style: italic;
-    font-size: 0.95rem;
-    opacity: 0.8;
+/* =========================================
+   PIXEL-ART HANDSHAKE (pure CSS, no JS)
+   =========================================
+   A 140 x 46 pixel area drawn with the Pixel Blocks font: 140 characters wide,
+   23 rows tall. It has no border and uses the page colours, so the hands look
+   drawn straight onto the page; the sleeves dissolve into dots near the edges.
+   The hands were rendered from simple 3D models, then turned into pixels:
+   lit skin is solid, shadows become dot patterns, lines separate overlapping parts.
+   It holds three <pre> drawings: the left hand, the right hand and the
+   clasped handshake. All animations share one 7s loop so they stay in sync:
+     0-6%    empty
+     6-24%   hands reach in from the top corners, 3 pixels across + 1 down per step
+     24-30%  fingertips touch
+     30-80%  handshake (shakes up and down 36-57%)
+     80-96%  hands slide back out
+*/
+.ascii-board {
+    --px: 0.5em;                           /* one pixel = one character's width */
+    --row: 1em;                            /* one text row = two pixels tall */
+    --bg: #283618;                         /* same green as the page */
+    --ink: #EFD0CA;                        /* same cream as the page text */
+    --fade: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+    --fade-top: linear-gradient(to bottom, transparent, #000 12%);
+    position: relative;
+    width: calc(140 * var(--px));
+    max-width: 100%;
+    height: calc(23 * var(--row));
+    margin: 5px auto 0;
+    overflow: hidden;                      /* hides the hands while they are "off screen" */
+    font-family: 'Pixel Blocks', monospace;
+    font-size: clamp(4px, calc((100vw - 40px) / 70), 10px);  /* 10px font = 5px pixels; shrinks to fit phones */
+    line-height: var(--row);
+    text-align: left;                      /* the header is centered; the drawings must not be */
+    color: var(--ink);
+    /* soft edges, so hands sliding in or out never show a hard cut-off line */
+    -webkit-mask-image: var(--fade), var(--fade-top);
+    -webkit-mask-composite: source-in;
+    mask-image: var(--fade), var(--fade-top);
+    mask-composite: intersect;
+}
+
+/* Thin lines in the page colour on top of everything, so neighbouring
+   pixels show tiny gaps between them, like an old LCD */
+.ascii-board::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(to right, var(--bg) 0 12%, transparent 12%),
+        linear-gradient(to bottom, var(--bg) 0 12%, transparent 12%);
+    background-size: var(--px) var(--px);
+    opacity: 0.6;
+}
+
+.ascii-board pre {
+    position: absolute;
+    top: 0;
+    font: inherit;
+}
+
+/* Left hand: drawn on the left half, fingertips at the middle */
+.ascii-hand-left {
+    left: 0;
+    animation: hand-left 7s steps(24, end) infinite,
+               show-hands 7s step-end infinite;
+}
+
+/* Right hand: drawn on the right half, fingertips at the middle */
+.ascii-hand-right {
+    left: 50%;
+    animation: hand-right 7s steps(24, end) infinite,
+               show-hands 7s step-end infinite;
+}
+
+.ascii-handshake {
+    left: 0;
+    opacity: 0;
+    animation: show-handshake 7s step-end infinite,
+               shake 7s step-end infinite;
+}
+
+/* Hands travel along their arms: 72 pixels across and 24 up is far enough
+   to push each one fully out of view, in whole-pixel steps */
+@keyframes hand-left {
+    0%, 6%    { transform: translate(calc(-72 * var(--px)), calc(-24 * var(--px))); }
+    24%, 84%  { transform: translate(0, 0); }
+    96%, 100% { transform: translate(calc(-72 * var(--px)), calc(-24 * var(--px))); }
+}
+
+@keyframes hand-right {
+    0%, 6%    { transform: translate(calc(72 * var(--px)), calc(-24 * var(--px))); }
+    24%, 84%  { transform: translate(0, 0); }
+    96%, 100% { transform: translate(calc(72 * var(--px)), calc(-24 * var(--px))); }
+}
+
+@keyframes show-hands {
+    0%   { opacity: 1; }
+    30%  { opacity: 0; }
+    80%  { opacity: 1; }
+}
+
+@keyframes show-handshake {
+    0%        { opacity: 0; }
+    30%       { opacity: 1; }
+    80%, 100% { opacity: 0; }
+}
+
+/* Moves the clasped hands one row (2 pixels) up / down, twice */
+@keyframes shake {
+    0%        { transform: translateY(0); }
+    36%       { transform: translateY(calc(-1 * var(--row))); }
+    39%       { transform: translateY(0); }
+    42%       { transform: translateY(var(--row)); }
+    45%       { transform: translateY(0); }
+    48%       { transform: translateY(calc(-1 * var(--row))); }
+    51%       { transform: translateY(0); }
+    54%       { transform: translateY(var(--row)); }
+    57%, 100% { transform: translateY(0); }
+}
+
+/* Visitors who prefer less motion just see the handshake */
+@media (prefers-reduced-motion: reduce) {
+    .ascii-board pre {
+        animation: none;
+    }
+
+    .ascii-hand {
+        opacity: 0;
+    }
+
+    .ascii-handshake {
+        opacity: 1;
+    }
 }
 
 /* The horizontal line under the header
